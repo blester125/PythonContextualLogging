@@ -3,9 +3,9 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pythontemplate"
+name = "contextuallogging"
 version = "0.0.1"
-description = "Template repository to be used as a base for Python projects"
+description = "Pure-Python semantic logging library with thread-local context "
 readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
@@ -13,7 +13,7 @@ authors = [{name = "Charles Andrews", email = "cfandrews@outlook.com"}]
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/cfandrews/PythonTemplate"
+Homepage = "https://github.com/cfandrews/PythonContextualLogging"
 
 [project.optional-dependencies]
 build = [
@@ -45,7 +45,7 @@ profile = "black"
 src_paths = ["src", "tests"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=pythontemplate --cov-fail-under=100 --cov-report=term-missing tests"
+addopts = "--cov=contextuallogging --cov-fail-under=100 --cov-report=term-missing tests"
 cache_dir = "./build/pytest"
 
 [tool.mypy]
