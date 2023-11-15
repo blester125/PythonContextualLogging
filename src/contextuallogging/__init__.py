@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .main import main
+from ._main import main
 
 __all__: Final[list[str]] = ["main"]
 __docformat__: Final[str] = "google"
