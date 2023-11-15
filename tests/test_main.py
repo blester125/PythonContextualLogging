@@ -1,5 +1,6 @@
 # Copyright 2023 Charles Andrews
 """Unit tests for contextuallogging.main."""
+
 from contextuallogging import main
 
 

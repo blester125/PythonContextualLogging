@@ -1,5 +1,6 @@
 # Copyright 2023 Charles Andrews
 """Entrypoint script."""
+
 import logging
 
 
