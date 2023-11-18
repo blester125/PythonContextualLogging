@@ -6,5 +6,5 @@
 
 Pure-Python semantic logging library with thread-local context 
 
-[Source](https://github.com/cfandrews/PythonContextualLogging/)\
+[Source](https://github.com/cfandrews/PythonContextualLogging/)  
 [Documentation](https://cfandrews.github.io/PythonContextualLogging/contextuallogging.html)

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from ._main import main
+from ._contextual_formatter import ContextualFormatter
 
-__all__: Final[list[str]] = ["main"]
+__all__: Final[list[str]] = ["ContextualFormatter"]
 __docformat__: Final[str] = "google"
