@@ -39,7 +39,7 @@ def outer_function(request_id: str) -> None:
 
 outer_function(request_id="7fb9b341")
 ```
-Which will outputs:
+Which will output:
 ```json lines
 {"level": "INFO", "logger": "root", "message": "outer_function", "request_id": "7fb9b341", "timestamp": "2023-11-25T20:56:41.796564Z"}
 {"level": "INFO", "logger": "root", "message": "inner_function", "request_id": "7fb9b341", "timestamp": "2023-11-25T20:56:41.797024Z", "user": "cfandrews"}
