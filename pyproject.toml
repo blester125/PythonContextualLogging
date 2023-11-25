@@ -62,7 +62,7 @@ ignore_missing_imports = true
 [tool.coverage.report]
 exclude_also = [
     "break", # https://github.com/nedbat/coveragepy/issues/772
-    "main()",
+    "if TYPE_CHECKING:"
 ]
 
 [tool.coverage.run]

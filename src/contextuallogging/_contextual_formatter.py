@@ -8,6 +8,8 @@ from json import JSONEncoder
 from logging import Formatter, LogRecord
 from typing import Final
 
+from contextuallogging._context_management import get_context
+
 
 class ContextualFormatter(Formatter):
     """Logging Formatter which can impart contextual information onto a LogRecord.
@@ -28,7 +30,22 @@ class ContextualFormatter(Formatter):
      * If `exc_info` present on the LogRecord
     * `stack`
      * If `stack_info` present on the LogRecord
-    """
+
+    Example usage:
+
+    >>> import logging
+    >>> import sys
+    >>> from contextuallogging import ContextualFormatter
+    >>>
+    >>> logger = logging.getLogger()
+    >>> handler = logging.StreamHandler(sys.stdout)
+    >>> handler.setFormatter(ContextualFormatter())
+    >>> logger.addHandler(handler)
+    >>> logger.setLevel(logging.INFO)
+    >>>
+    >>> logger.info("Lorem ipsum dolor sit amet")
+    {"level": "INFO", "logger": "root", "message": "Lorem ipsum dolor sit amet", "timestamp": "2023-11-25T22:25:42.803579Z"}
+    """  # noqa: E501
 
     def __init__(
         self,
@@ -50,7 +67,7 @@ class ContextualFormatter(Formatter):
             encoder (JSONEncoder | None): An optional JSONEncoder to use for formatting
                 log messages.
         """
-        self._encoder: Final[JSONEncoder] = (
+        self.__encoder: Final[JSONEncoder] = (
             JSONEncoder(skipkeys=True, ensure_ascii=False, sort_keys=True)
             if encoder is None
             else encoder
@@ -83,4 +100,4 @@ class ContextualFormatter(Formatter):
             data["exception"] = record.exc_text
         if record.stack_info is not None:
             data["stack"] = self.formatStack(stack_info=record.stack_info)
-        return self._encoder.encode(data)
+        return self.__encoder.encode({**data, **get_context()})

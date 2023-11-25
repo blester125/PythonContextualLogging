@@ -1,8 +1,0 @@
-{% extends "default/module.html.jinja2" %}
-{% macro is_public(doc) %}
-    {% if doc.qualname == "contextuallogging" %}
-        true
-    {% else %}
-        {{ default_is_public(doc) }}
-    {% endif %}
-{% endmacro %}
