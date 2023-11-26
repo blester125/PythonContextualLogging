@@ -17,8 +17,8 @@ logging formatter subclass.
 
 This is a basic example:
 ```python
-import logging
 import sys
+import logging
 from contextuallogging import context, ContextualFormatter
 
 logger = logging.getLogger()

@@ -40,8 +40,8 @@ def context(
 
     Example usage:
 
-    >>> import logging
     >>> import sys
+    >>> import logging
     >>> from contextuallogging import context, ContextualFormatter
     >>>
     >>> logger = logging.getLogger()
