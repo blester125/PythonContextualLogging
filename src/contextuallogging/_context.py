@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import inspect
 from functools import partial, wraps
 from typing import TYPE_CHECKING, Any, Callable, Final
 
@@ -29,9 +30,10 @@ def context(
     are already present, but the context will be reset to its original state once the
     wrapped function returns.
 
-    As this package uses ContextVars behind-the-scenes, the logging context can be
-    propagated to async function calls in some cases and follows the same rules as
-    ContextVars as to when that happens.
+    This decorator supports decorating async functions, as well. As this package uses
+    ContextVars behind-the-scenes, the logging context can be propagated to async
+    function calls in some cases and follows the same rules as ContextVars as to when
+    that happens.
 
     The created wrapper function raises a RuntimeError if the provided keyword name is
     not actually present in the passed-in kwargs.
@@ -71,17 +73,34 @@ def context(
     if function is None:
         return partial(context, keyword=keyword, key=key)
 
-    @wraps(function)
-    def wrapper(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
-        if keyword not in kwargs:
-            message: Final[str] = f"Keyword argument not provided: {keyword}"
-            raise RuntimeError(message)
-        token: Final[Token[dict[str, object]]] = set_context_key(
-            key=keyword if key is None else key,
-            value=kwargs[keyword],
-        )
-        result: Final[Any] = function(*args, **kwargs)
-        reset_context(token=token)
-        return result
+    if inspect.iscoroutinefunction(function):
+
+        @wraps(function)
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+            if keyword not in kwargs:
+                message: Final[str] = f"Keyword argument not provided: {keyword}"
+                raise RuntimeError(message)
+            token: Final[Token[dict[str, object]]] = set_context_key(
+                key=keyword if key is None else key,
+                value=kwargs[keyword],
+            )
+            result: Final[Any] = await function(*args, **kwargs)
+            reset_context(token=token)
+            return result
+
+    else:
+
+        @wraps(function)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+            if keyword not in kwargs:
+                message: Final[str] = f"Keyword argument not provided: {keyword}"
+                raise RuntimeError(message)
+            token: Final[Token[dict[str, object]]] = set_context_key(
+                key=keyword if key is None else key,
+                value=kwargs[keyword],
+            )
+            result: Final[Any] = function(*args, **kwargs)
+            reset_context(token=token)
+            return result
 
     return wrapper

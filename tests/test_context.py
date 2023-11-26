@@ -3,6 +3,7 @@
 
 from __future__ import annotations  # noqa: I001
 
+import asyncio
 from typing import Any
 
 import pytest
@@ -39,8 +40,14 @@ def test_context(
     def function(**kwargs: Any) -> None:  # noqa: ARG001, ANN401
         assert_that(get_context()).is_equal_to(expected)
 
+    @context(keyword=keyword, key=key)
+    async def async_function(**kwargs: Any) -> None:  # noqa: ARG001, ANN401
+        assert_that(get_context()).is_equal_to(expected)
+
     assert_that(get_context()).is_equal_to({})
     function(**arguments)
+    assert_that(get_context()).is_equal_to({})
+    asyncio.get_event_loop().run_until_complete(async_function(**arguments))
     assert_that(get_context()).is_equal_to({})
 
 
@@ -51,5 +58,11 @@ def test_context_runtime_error() -> None:
     def function() -> None:
         pass
 
+    @context(keyword="keyword")
+    async def async_function() -> None:
+        pass
+
     with pytest.raises(RuntimeError, match="Keyword argument not provided: keyword"):
         function()
+    with pytest.raises(RuntimeError, match="Keyword argument not provided: keyword"):
+        asyncio.get_event_loop().run_until_complete(async_function())
