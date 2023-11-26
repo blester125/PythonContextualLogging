@@ -16,6 +16,11 @@ from __future__ import annotations
 
 from typing import Final
 
+from contextuallogging._configuration import (
+    Configuration,
+    get_configuration,
+    set_configuration,
+)
 from contextuallogging._context import context
 from contextuallogging._context_management import (
     get_context,
@@ -30,5 +35,8 @@ __all__: Final[list[str]] = [
     "get_context",
     "set_context_key",
     "reset_context",
+    "Configuration",
+    "get_configuration",
+    "set_configuration",
 ]
 __docformat__: Final[str] = "google"
