@@ -8,8 +8,15 @@
 
 Pure-Python semantic logging library with context-local values.
 
+[PyPI](https://pypi.org/project/contextuallogging/)  
 [Source](https://github.com/cfandrews/PythonContextualLogging/)  
 [Documentation](https://cfandrews.github.io/PythonContextualLogging/contextuallogging.html)
+
+## Installation
+This package is available on PyPI and can be installed with pip:
+```shell
+pip install contextuallogging
+```
 """  # noqa: W291, D205, D415
 # fmt: on
 
