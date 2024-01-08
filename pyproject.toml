@@ -67,3 +67,6 @@ exclude_also = [
 
 [tool.coverage.run]
 data_file = "./build/coverage"
+
+[tool.setuptools.package-data]
+"contextuallogging" = ["py.typed"]
