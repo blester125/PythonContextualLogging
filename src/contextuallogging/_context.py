@@ -84,8 +84,13 @@ def context(
                 key=keyword if key is None else key,
                 value=kwargs[keyword],
             )
-            result: Final[Any] = await function(*args, **kwargs)
-            reset_context(token=token)
+            try:
+                result: Final[Any] = await function(*args, **kwargs)
+            except:
+                raise
+            # Finally is run before the re-raise happens.
+            finally:
+                reset_context(token=token)
             return result
 
     else:
@@ -99,8 +104,13 @@ def context(
                 key=keyword if key is None else key,
                 value=kwargs[keyword],
             )
-            result: Final[Any] = function(*args, **kwargs)
-            reset_context(token=token)
+            try:
+                result: Final[Any] = function(*args, **kwargs)
+            except:
+                raise
+            # Finally is run before the re-raise happens.
+            finally:
+                reset_context(token=token)
             return result
 
     return wrapper
