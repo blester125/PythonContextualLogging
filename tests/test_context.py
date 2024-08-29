@@ -44,10 +44,33 @@ def test_context(
     async def async_function(**kwargs: Any) -> None:  # noqa: ARG001, ANN401
         assert_that(get_context()).is_equal_to(expected)
 
+    @context(keyword=keyword, key=key)
+    def function_with_error(**kwargs: Any) -> None:  # noqa: ARG001, ANN401
+        assert_that(get_context()).is_equal_to(expected)
+        raise ValueError
+
+    @context(keyword=keyword, key=key)
+    async def async_function_with_error(**kwargs: Any) -> None:  # noqa: ARG001, ANN401
+        assert_that(get_context()).is_equal_to(expected)
+        raise ValueError
+
     assert_that(get_context()).is_equal_to({})
     function(**arguments)
     assert_that(get_context()).is_equal_to({})
     asyncio.get_event_loop().run_until_complete(async_function(**arguments))
+    assert_that(get_context()).is_equal_to({})
+
+    # Tests where the decorated function throw errors
+    assert_that(get_context()).is_equal_to({})
+    try:
+        function_with_error(**arguments)
+    except ValueError:
+        pass
+    assert_that(get_context()).is_equal_to({})
+    try:
+        asyncio.get_event_loop().run_until_complete(async_function_with_error(**arguments))
+    except ValueError:
+        pass
     assert_that(get_context()).is_equal_to({})
 
 
